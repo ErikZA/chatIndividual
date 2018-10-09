@@ -1,5 +1,6 @@
 <link rel='stylesheet' href='/stylesheets/styleIndex.css' />
-<script src="/javascripts/loadUsers.js"/></script>
+<script src="/javascripts/loadUsers.js" />
+</script>
 
 <body>
 
@@ -11,17 +12,19 @@
                 <div id="btn1" class="input-group">
                     <input type="text" id="searchUser" class="form-control" placeholder="Search User.." name="searchUser">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" onclick= "loadUsers()">
+                        <button class="btn btn-default" type="button" onclick="loadUsers()">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
                 </div>
                 <div id="divList">
-                    <ul class="nav nav-pills nav-stacked">
-                        {{#each user}}
-                        <li><a href=""><img id="imgUser" src="/images/caricatura2.jpg" alt="ImagenFriend">{{nameFriend}}</a></li>
-                        {{/each}}
-                    </ul><br>
+                        <ul class="nav nav-pills nav-stacked">
+                            {{#each people}}
+                                <li><img id="imgUser" src="/images/caricatura2.jpg" alt="ImagenFriend">
+                                {{nameFriend}} {{lastName}}</li>
+                            {{/each}}
+                        </ul>
+                    <br>
                 </div>
             </div>
 

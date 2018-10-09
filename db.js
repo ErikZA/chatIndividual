@@ -13,10 +13,13 @@ function saveUser(name, lastName, passWord, callback) {
 }
 
 function getUser(name, callback) {
-    global.db.collection('user').find({name: name}, $or ,{lastName: name}).pretty(function (err, docs) {
-        if (err) return console.log("algo deu errado" + err);
-        callback(docs);
-    });
+    global.db.collection('user').find({$or: [{name: name},{lastName: name}]}).toArray(
+        function (err, docs) {
+            if (err) return console.log("algo deu errado" + err);
+            //console.log(docs + "blblblbl")
+            callback(docs);
+        }
+    );
 }
 function chekUser(logName, logLastName, callback) {
     global.db.collection('user').find({ name: logName, lastName: logLastName }).count(function (err, docs) {
