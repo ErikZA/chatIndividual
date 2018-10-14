@@ -1,14 +1,13 @@
-
- 
-
 function loadUsers() {
     $.post('/list',
-        {name: $('#searchUser').val()},
+        { name: $('#searchUser').val() },
         function (data, status) {
-            console.log("Data: " + data + "\nStatus: " + status);
-            //tratar a pagina que esta voltando em data;
+            $.get('/listPeople', function(res,status){
+                //alert("template" + res);
+                const personTemplete = Handlebars.compile(res);
+                const html = personTemplete({ people: data })
+                console.log(html);
+                $("#people").html(html);
+            });     
         });
 }
-
-
-

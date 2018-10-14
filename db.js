@@ -33,7 +33,7 @@ function chekUser(logName, logLastName, callback) {
 function chekPasswordUser(logName, logLastName, logPassword, callback) {
     global.db.collection('user').find({ name: logName, lastName: logLastName, passWord: logPassword }).count(function (err, docs) {
         if (err) return console.log("algo deu errado" + err);
-        console.log(docs + 'aboroas'+logName +" "+ logLastName+logPassword)
+        //console.log(docs + 'aboroas'+logName +" "+ logLastName+logPassword)
         callback(docs);
     });
 }

@@ -11,6 +11,11 @@ router.get('/login', function (req, res, next) {
   res.render('login', { title: 'Login' });
 });
 
+/* GET login. */
+router.get('/login/:exit', function (req, res, next) {
+  res.render('login', { title: 'Login', sucess: 'Check back often!' });
+});
+
 /* POST login listing. */
 router.post('/new', function (req, res, next) {
   var name = req.body.nameCad;
@@ -49,8 +54,9 @@ router.post('/loginChat', function (req, res, next) {
   var passWord = req.body.PasswordLog;
   require('../db').chekPasswordUser(name, lastName, passWord, function (docs) {
     if(docs){
-      //require('../db').saveUser(name, lastName, passWord,function () {  });
-        res.render('chat',{title: 'Chat'+ ' '+name+' '+lastName, nameUser:name+' '+lastName});
+        res.cookie('login',name+' '+lastName);
+        res.redirect('/chat/'+name+" "+lastName);
+        return;
     } else{
       console.log(docs + 'aboroas'+name +" "+ lastName+passWord);
         res.render('login', { title: 'Login', senhaLog: 'Incorrect password or User Not registered!'});
