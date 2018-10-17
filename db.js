@@ -13,18 +13,17 @@ function saveUser(name, lastName, passWord, callback) {
 }
 
 function getUser(name, callback) {
-    global.db.collection('user').find({$or: [{name: name},{lastName: name}]}).toArray(
+    global.db.collection('user').find({ $or: [{ name: name }, { lastName: name }] }).toArray(
         function (err, docs) {
             if (err) return console.log("algo deu errado" + err);
-            //console.log(docs + "blblblbl")
             callback(docs);
         }
     );
 }
+
 function chekUser(logName, logLastName, callback) {
     global.db.collection('user').find({ name: logName, lastName: logLastName }).count(function (err, docs) {
         if (err) return console.log("algo deu errado" + err);
-        //console.log(docs + "blblblbl")
         callback(docs);
 
     });
@@ -33,14 +32,47 @@ function chekUser(logName, logLastName, callback) {
 function chekPasswordUser(logName, logLastName, logPassword, callback) {
     global.db.collection('user').find({ name: logName, lastName: logLastName, passWord: logPassword }).count(function (err, docs) {
         if (err) return console.log("algo deu errado" + err);
-        //console.log(docs + 'aboroas'+logName +" "+ logLastName+logPassword)
         callback(docs);
     });
 }
 
-function exitChat(callback){
-    
+function getChat(nameChat, nameUser, callback) {
+    global.db.collection('chatUsers').find({ 
+        $or: [ 
+            { $and : [ { nameChat: nameChat }, { nameUser: nameUser } ] },
+            { $and : [ { nameUser: nameChat }, { nameChat: nameUser } ] }
+        ]
+    }).sort({date: 1}).toArray(
+        function (err, docs) {
+            if (err) return console.log("algo deu errado" + err);
+            callback(docs);
+        }
+    );
 }
 
-module.exports = { saveUser, getUser, chekUser, chekPasswordUser, exitChat }
+function setMsg(nameChat, nameUser, txtMsg, callback){
+    global.db.collection('chatUsers').insert({ nameChat: nameChat, nameUser: nameUser, date: new Date(), msg: txtMsg }, 
+        function (err, docs) {
+            if (err) return console.log("algo deu errado" + err);
+
+                global.db.collection('chatUsers').find({ 
+                    $or: [ 
+                        { $and : [ { nameChat: nameChat }, { nameUser: nameUser } ] },
+                        { $and : [ { nameUser: nameChat }, { nameChat: nameUser } ] }
+                        ]
+                }).sort({date: 1}).toArray(
+                    function (err, docs) {
+                    if (err) return console.log("algo deu errado" + err);
+                    callback(docs);
+                }
+                );
+        }
+    );   
+}
+
+function exitChat(callback) {
+
+}
+
+module.exports = { saveUser, getUser, chekUser, chekPasswordUser, exitChat, getChat, setMsg }
 
